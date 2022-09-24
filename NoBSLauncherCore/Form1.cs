@@ -22,6 +22,11 @@ namespace NoBSLauncherCore
             checkForHOI();
             initializeMods();
             initializeDLC();
+
+            Control modLabel = Controls.Find("modLabel", false)[0];
+            modLabel.Location = new Point((Width / 4) - (modLabel.Width / 2), 5);
+            Control dlcLabel = Controls.Find("dlcLabel", false)[0];
+            dlcLabel.Location = new Point(((Width / 4) * 3) - (dlcLabel.Width / 2), 5);
         }
 
         private void checkForHOI()
@@ -77,9 +82,10 @@ namespace NoBSLauncherCore
             modListBox.FormattingEnabled = true;
             modListBox.Location = new Point(0, 25);
             modListBox.Name = "modListBox";
-            modListBox.Size = new Size(400, 385);
+            modListBox.Size = new Size(Convert.ToInt32(Width * 0.5), Convert.ToInt32((Height * 0.85) - 25));
             modListBox.TabIndex = 1;
             modListBox.ItemCheck += new ItemCheckEventHandler(modListBox_ItemCheck);
+            modListBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             for (int i = 0; i < modList.Length; i++)
             {
                 modList[i] = new Mod(files[i]);
@@ -113,11 +119,12 @@ namespace NoBSLauncherCore
             }
             CheckedListBox dlcListBox = new CheckedListBox();
             dlcListBox.FormattingEnabled = true;
-            dlcListBox.Location = new Point(400, 25);
-            dlcListBox.Name = "modListBox";
-            dlcListBox.Size = new Size(400, 385);
+            dlcListBox.Location = new Point(Width/2, 25);
+            dlcListBox.Name = "dlcListBox";
+            dlcListBox.Size = new Size(Convert.ToInt32(Width * 0.5), Convert.ToInt32((Height * 0.85) - 25));
             dlcListBox.TabIndex = 1;
             dlcListBox.ItemCheck += new ItemCheckEventHandler(dlcListBox_ItemCheck);
+            dlcListBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             dlcList = new DLC[dlcInstalled.Count];
             for (int i = 0; i < dlcList.Length; i++)
             {
@@ -205,6 +212,38 @@ namespace NoBSLauncherCore
                 string hoiPath = hoiDirectory + "\\hoi4.exe";
                 Process.Start(hoiPath, "-debug");
                 Application.Exit();
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (initializingMods == false)
+            {
+                Control modListBox = Controls.Find("modListBox", false)[0];
+                modListBox.Width = Convert.ToInt32(Width * 0.5);
+                modListBox.Location = new Point(0, 25);
+            }
+            if (initializingDLC == false)
+            {
+                Control dlcListBox = Controls.Find("dlcListBox", false)[0];
+                dlcListBox.Width = Convert.ToInt32(Width * 0.5);
+                dlcListBox.Location = new Point(Width / 2, 25);
+            }
+            Control modLabel = Controls.Find("modLabel", false)[0];
+            modLabel.Location = new Point((Width / 4) - (modLabel.Width / 2), 5);
+            Control dlcLabel = Controls.Find("dlcLabel", false)[0];
+            dlcLabel.Location = new Point(((Width / 4)*3) - (dlcLabel.Width / 2), 5);
+        }
+
+        private void disableAllModsButton_Click(object sender, EventArgs e)
+        {
+            if (!initializingMods)
+            {
+                CheckedListBox modListBox = (CheckedListBox) Controls.Find("modListBox", false)[0];
+                for (int i = 0; i < modListBox.Items.Count; i++)
+                {
+                    modListBox.SetItemChecked(i, false);
+                }
             }
         }
     }
