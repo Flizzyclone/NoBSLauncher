@@ -1,6 +1,9 @@
 # NoBSLauncher
 No BS Launcher is a basic launcher for the game Hearts of Iron IV. The launcher is used for enabling DLC/Mods and launching the game in either debug or normal mode.
 
+## Requirements
+[ASP.NET Core Runtime 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+
 ## Capabilities
 1. Launch the game in either debug or normal mode.
 2. Can be used without Steam open.
